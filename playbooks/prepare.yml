@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - include_role:
+        name: mysql-prepare
+
+- hosts: web_servers
+  become: yes
+  tasks:
+    - include_role:
+        name: nginx-prepare

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - include_role:
+        name: backend-build
+
+    - include_role:
+        name: frontend-build

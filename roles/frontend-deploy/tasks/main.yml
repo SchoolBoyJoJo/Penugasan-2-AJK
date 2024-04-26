@@ -1,0 +1,11 @@
+---
+- name: Copy frontend files to web server
+  synchronize:
+    src: /home/schoolboy/penugasan-camin-2-ajk/Penugasan-2-AJK/roles/frontend-deploy
+    dest: /var/www/frontend
+    delete: yes
+
+- name: Restart frontend service
+  service:
+    name: frontend
+    state: restarted

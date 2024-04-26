@@ -1,0 +1,5 @@
+---
+- name: Run backend database migrations
+  command: python manage.py migrate
+  args:
+    chdir: /home/schoolboy/penugasan-camin-2-ajk/Penugasan-2-AJK/roles/backend-build

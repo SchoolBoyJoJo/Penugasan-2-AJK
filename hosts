@@ -1,0 +1,2 @@
+[deployment]
+18.119.163.25 ansible_ssh_user=ec2-user
