@@ -5,3 +5,4 @@ Jonathan Purba
 
 
 masih banyak error, aku buat sebisa ku aja maaf mbak/mas hasilnya nggak maksimal dan struktur nya blm mengikuti sesuai dengan penugasan
+code yang jalan ada di branch opsilain, bukan di main
