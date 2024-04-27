@@ -1,0 +1,35 @@
+- name: "Deploying website to vm"
+  hosts: webserver
+  tasks:
+    - name: "Copy the Web Contents from GitHub to the servers"
+      git:
+        repo: https://github.com/elshiraphine/fe-todo.git  # Ganti dengan URL repositori GitHub Anda
+        dest: /tmp/web-contents  # Direktori tempat repositori akan di-kloning pada server
+      register: git_repo
+
+    - name: "Copy the cloned repository contents to the web server directory"
+      copy:
+        src: "{{ git_repo.dest }}/*"
+        dest: /var/www/frontend/
+      when: git_repo.changed  # Hanya menyalin jika repositori telah diubah
+
+    - name: "Install Nginx with package managers on Debian based Distro"
+      apt:
+        name: nginx
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+      become: true
+
+    - name: "Install Nginx with package managers on CentOs Based Distro"
+      yum:
+        name: nginx
+        state: present
+      when: ansible_distribution == 'CentOS'
+      become: true
+
+    - name: "Start Nginx Server"
+      shell: systemctl enable nginx && systemctl start nginx
+      become: true
+
+    - name: "Restart the Nginx Server"
+      shell: systemctl restart nginx
