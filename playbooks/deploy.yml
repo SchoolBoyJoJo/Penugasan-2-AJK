@@ -1,6 +1,6 @@
 ---
 - name: Deploy
-  hosts: all
+  hosts: localhost
   become: true
   roles:
     - ../roles/backend-deploy
