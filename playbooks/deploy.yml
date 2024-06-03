@@ -1,9 +1,7 @@
 ---
-- hosts: web_servers
-  become: yes
-  tasks:
-    - include_role:
-        name: backend-deploy
-
-    - include_role:
-        name: frontend-deploy
+- name: Deploy
+  hosts: all
+  become: true
+  roles:
+    - ../roles/backend-deploy
+    - ../roles/frontend-deploy

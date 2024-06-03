@@ -1,12 +1,9 @@
----
-- hosts: all
-  become: yes
-  tasks:
-    - include_role:
-        name: mysql-prepare
-
-- hosts: web_servers
-  become: yes
-  tasks:
-    - include_role:
-        name: nginx-prepare
+--- 
+- name: Set up webserver
+  hosts: localhost
+  vars_files:
+    - ../env/vars.yml 
+  become: true
+  roles:
+    - ../roles/nginx-prepare
+    - ../roles/mysql-prepare

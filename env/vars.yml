@@ -1,17 +1,7 @@
 ---
-# Variabel untuk konfigurasi backend
-backend_port: 8000
-backend_database_name: "my_database"
-backend_database_user: "db_user"
-backend_database_password: "db_password"
+# vars file for mysql
 
-# Variabel untuk konfigurasi frontend
-frontend_port: 3000
-
-# Variabel untuk konfigurasi MySQL
-mysql_root_password: "mysql_root_password"
-
-# Variabel untuk konfigurasi Nginx
-nginx_server_name: "example.com"
-nginx_backend_server: "localhost:{{ backend_port }}"
-nginx_frontend_server: "localhost:{{ frontend_port }}"
+db_name: coba1
+db_user: user1
+db_password: supersecret
+# db_password: "{{ (lookup('file', 'secret.yml') | from_yaml).db_password | default('') }}"

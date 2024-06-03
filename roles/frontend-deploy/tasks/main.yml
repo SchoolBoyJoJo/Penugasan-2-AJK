@@ -1,11 +1,27 @@
 ---
-- name: Copy frontend files to web server
-  synchronize:
-    src: /home/schoolboy/penugasan-camin-2-ajk/Penugasan-2-AJK/roles/frontend-deploy
-    dest: /var/www/frontend
-    delete: yes
+# tasks file for frontend-deploy
+- name: Copy fe template
+  become: true
+  copy:
+    src: ../roles/frontend-deploy/templates/fe-template.j2
+    dest: /etc/nginx/sites-available/frontend
+  notify: Restart nginx
 
-- name: Restart frontend service
-  service:
-    name: frontend
-    state: restarted
+- name: Link to site-enabled
+  file:
+    src: /etc/nginx/sites-available/frontend
+    dest: /etc/nginx/sites-enabled/frontend
+    state: link
+  become: true
+  notify: Restart nginx
+
+- name: Curl result
+  uri:
+    url: "http://localhost:3000"
+    method: GET
+    return_content: yes
+  register: result
+
+- name: Display response
+  debug:
+    var: result.content

@@ -1,11 +1,37 @@
 ---
-- name: Copy backend files to web server
-  synchronize:
-    src: /home/schoolboy/penugasan-camin-2-ajk/Penugasan-2-AJK/roles/backend-build
-    dest: /var/www/backend
-    delete: yes
+# tasks file for backend-deploy
+- name: Copy be template
+  become: true
+  copy:
+    src: ../roles/backend-deploy/templates/be-template.j2
+    dest: /etc/nginx/sites-available/backend
 
-- name: Restart backend service
-  service:
-    name: backend
-    state: restarted
+- name: Link to site-enabled
+  file:
+    src: /etc/nginx/sites-available/backend
+    dest: /etc/nginx/sites-enabled/backend
+    state: link
+  become: true
+  notify: Restart nginx
+
+- name: start php-fpm
+  shell: "./php8.1-fpm start"
+  become: yes
+  args:
+    chdir: /etc/init.d/
+
+# - name: Run PHP Artisan Serve
+#   command:
+#     cmd: "nohup php artisan serve --port=9000 &"
+#     chdir: "/var/www/be-todo"
+
+- name: Curl result
+  uri:
+    url: "http://localhost:8000"
+    method: GET
+    return_content: yes
+  register: result
+
+- name: Display response
+  debug:
+    var: result.content

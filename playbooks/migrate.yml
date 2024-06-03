@@ -1,6 +1,6 @@
 ---
-- hosts: db_server
-  become: yes
-  tasks:
-    - include_role:
-        name: backend-migrate
+- name: Migrate
+  hosts: all
+  become: true
+  roles:
+    - ../roles/backend-migrate
