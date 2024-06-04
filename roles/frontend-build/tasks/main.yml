@@ -52,6 +52,17 @@
   args:
     executable: /bin/bash
 
+- name: Print Node.js version
+  become: yes
+  become_user: root
+  shell: "source /root/.nvm/nvm.sh && nvm use 18 && node -v"
+  args:
+    executable: /bin/bash
+  register: node_version
+
+- debug:
+    msg: "Node.js version installed: {{ node_version.stdout }}"
+
 - name: Install npm
   apt:
     name: npm
@@ -63,16 +74,36 @@
     global: yes
 
 - name: Yarn install
-  shell: "yarn install --ignore-engines"
+  shell: |
+    export NVM_DIR="/root/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm use 18
+    yarn install --ignore-engines
   args:
     chdir: /var/www/fe-todo
+    executable: /bin/bash
   become: yes
 
 - name: Yarn build
-  shell: "yarn build"
+  shell: |
+    export NVM_DIR="/root/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm use 18
+    yarn build
   args:
     chdir: /var/www/fe-todo
+    executable: /bin/bash
   become: yes
+  register: build_output
+  ignore_errors: yes
+
+- debug:
+    msg: "Yarn build output: {{ build_output.stdout }}"
+
+- name: Fail if build fails
+  fail:
+    msg: "Yarn build failed: {{ build_output.stderr }}"
+  when: build_output.rc != 0
 
 - name: Start pm2
   shell: "pm2 start --name fe-todo \"yarn start\""
