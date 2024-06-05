@@ -15,3 +15,6 @@ Backend
 
 ![image](https://github.com/SchoolBoyJoJo/Penugasan-2-AJK/assets/142652941/3d3d233e-9ac4-4e5c-8edb-8ccea3a98fe5)
 Frontend
+
+![image](https://github.com/SchoolBoyJoJo/Penugasan-2-AJK/assets/142652941/47212336-a219-486e-8726-68f79218f44a)
+Ansible
